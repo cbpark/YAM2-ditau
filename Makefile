@@ -15,6 +15,15 @@ LIBOBJ 	 := $(LIBSRC:.cc=.o)
 CXXFLAGS += $(shell HepMC3-config --cflags)
 LIBS     += $(shell HepMC3-config --libs)
 
+# YAM2 (https://github.com/cbpark/YAM2)
+YAM2     ?= /usr/local
+CXXFLAGS += -I$(YAM2)/include
+LIBS     += -L$(YAM2)/lib -lYAM2
+
+# NLopt (https://nlopt.readthedocs.io/
+NLOPT    ?= /usr
+LIBS     += -L$(NLOPT)/lib -lnlopt -Wl,-rpath $(NLOPT)/lib
+
 .PHONY: all build clean
 
 all: $(EXE)
