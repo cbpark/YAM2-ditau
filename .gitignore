@@ -2,4 +2,7 @@
 *~
 *.o
 *cache
+*.lhe
+*.gz
+*.dat
 bin
