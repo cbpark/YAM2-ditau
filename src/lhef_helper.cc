@@ -1,5 +1,10 @@
+/*
+ *  Copyright 2021 Chan Beom Park <cbpark@gmail.com>
+ */
+
 #include "lhef_helper.h"
 #include <algorithm>
+#include <ostream>
 #include <set>
 #include <vector>
 #include "HepMC3/LHEF.h"
@@ -46,12 +51,18 @@ Particles final_states_of(int parent, const Particles &ps) {
     return final_states;
 }
 
-Particles particles_of(std::set<long> pid, const Particles &ps) {
+Particles particles_of(std::set<int> pid, const Particles &ps) {
     Particles ps_;
     for (const auto &p : ps) {
         auto search = pid.find(p.id());
         if (search != pid.end()) { ps_.push_back(p); }
     }
     return ps_;
+}
+
+std::ostream &operator<<(std::ostream &os, const FourMomentum &p) {
+    os << "{ px = " << p.px() << ", py = " << p.py() << ", pz = " << p.pz()
+       << ", e = " << p.e() << " }";
+    return os;
 }
 }  // namespace analysis

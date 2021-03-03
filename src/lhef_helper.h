@@ -1,8 +1,14 @@
+/*
+ *  Copyright 2021 Chan Beom Park <cbpark@gmail.com>
+ */
+
 #ifndef SRC_LHEF_HELPER_H_
 #define SRC_LHEF_HELPER_H_
 
 #include <array>
 #include <optional>
+#include <ostream>
+#include <set>
 #include <utility>
 #include <vector>
 #include "HepMC3/LHEF.h"
@@ -14,7 +20,7 @@ using Particles = std::vector<Particle>;
 class Particle {
 private:
     int linenum_;
-    long id_;
+    int id_;
     int status_;
     std::pair<int, int> parents_;
     /// Lab frame momentum (Px, Py, Pz, E) of particle in GeV.
@@ -23,7 +29,7 @@ private:
 
 public:
     Particle() = delete;
-    Particle(int linenum, long id, int status,
+    Particle(int linenum, int id, int status,
              const std::pair<int, int> &parents, const std::vector<double> &p)
         : linenum_(linenum),
           id_(id),
@@ -33,7 +39,7 @@ public:
           mass_(p[4]) {}
 
     int linenum() const { return linenum_; }
-    long id() const { return id_; }
+    int id() const { return id_; }
     double status() const { return status_; }
     std::array<double, 4> four_momentum() const { return p_; }
     double mass() const { return mass_; }
@@ -62,7 +68,7 @@ Particles get_particles(const LHEF::HEPEUP &event);
 
 Particles final_states_of(int parent, const Particles &ps);
 
-Particles particles_of(std::set<long> pid, const Particles &ps);
+Particles particles_of(std::set<int> pid, const Particles &ps);
 
 class FourMomentum {
 private:
@@ -90,6 +96,8 @@ public:
         p1 += p2;
         return p1;
     }
+
+    friend std::ostream &operator<<(std::ostream &os, const FourMomentum &p);
 };
 
 /// returns the four-momentum (Px, Py, Pz, E) summed over the particles (`ps`).
