@@ -40,9 +40,16 @@ int main(int, char *argv[]) {
     std::ofstream fout{argv[2]};
 
     int nev = 0;
+    // -- event loop begins -- //
     while (lhef.readEvent() && ++nev) {
-        auto event = lhef.hepeup;
+        const auto event = lhef.hepeup;
+
+        // sqrt(s) of the particle collision.
+        const double sqrts = event.SCALUP;
+#ifdef DEBUG
         event.print(cout);
+        cout << "sqrt(s) = " << sqrts << '\n';
+#endif
 
         // get all the particles entries from the event.
         const auto ps = analysis::get_particles_all(event);
@@ -52,6 +59,13 @@ int main(int, char *argv[]) {
             cout << appname << ": this isn't ditau event! (" << nev << ")\n";
             continue;
         }
+
+        // the longitudinal momentum of total system.
+        const double pz_ditau =
+            taus[0].four_momentum()[2] + taus[1].four_momentum()[2];
+#ifdef DEBUG
+        cout << "pz_ditau = " << pz_ditau << '\n';
+#endif
 
         // the decay products of taus.
         std::vector<Particles> from_tau;
@@ -64,9 +78,12 @@ int main(int, char *argv[]) {
         auto [vis1, inv1] = get_vis_invis(from_tau[0]);
         auto [vis2, inv2] = get_vis_invis(from_tau[1]);
 
+#ifdef DEBUG
         cout << "vis1: " << vis1 << ", inv1: " << inv1 << '\n';
         cout << "vis2: " << vis2 << ", inv2: " << inv2 << '\n';
-    }  // event loop
+#endif
+    }
+    // -- event loop ends -- //
     fin.close();
 
     cout << appname << ": the number of events processed: " << nev << '\n';
