@@ -1,11 +1,11 @@
 #include "lhef_helper.h"
 #include <algorithm>
+#include <array>
 #include <vector>
 #include "HepMC3/LHEF.h"
 
 namespace analysis {
-bool Particle::produced_from(int parent,
-                             const std::vector<Particle> &ps) const {
+bool Particle::produced_from(int parent, const Particles &ps) const {
     const int parent_line = parents_.first;
     if (parent_line == 1 || parent_line == 2) {  // omit the initial states.
         return false;
@@ -14,11 +14,11 @@ bool Particle::produced_from(int parent,
     }
 
     // the line of the particle in the right previous decay step.
-    const auto direct_parent = this->parent(ps);
-    if (!direct_parent) {  // orphan?
+    const auto the_parent = this->parent(ps);
+    if (!the_parent) {  // orphan?
         return false;
     } else {
-        return direct_parent->produced_from(parent, ps);
+        return the_parent->produced_from(parent, ps);
     }
 }
 
@@ -44,5 +44,16 @@ Particles final_states_of(int parent, const Particles &ps) {
                               });
     final_states.erase(pos, final_states.end());
     return final_states;
+}
+
+std::array<double, 4> sum(const Particles& ps) {
+    std::array<double, 4> psum{0.0, 0.0, 0.0, 0.0};
+    for (const auto& p: ps) {
+        const auto momentum = p.four_momentum();
+        for (auto i = 0; i < 4; ++i) {
+            psum[i] = momentum[i];
+        }
+    }
+    return psum;
 }
 }  // namespace analysis

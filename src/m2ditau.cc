@@ -1,9 +1,13 @@
 #include <fstream>
 #include <iostream>
+#include <vector>
 #include "HepMC3/LHEF.h"
 #include "lhef_helper.h"
 
+using analysis::Particles;
 using std::cout;
+
+bool ditau_event(const Particles &ps);
 
 int main(int, char *argv[]) {
     const std::string appname{"m2ditau"};
@@ -16,16 +20,38 @@ int main(int, char *argv[]) {
     std::ofstream fout{argv[2]};
 
     long nev = 0;
-    while (lhef.readEvent()) {
-        const auto event = lhef.hepeup;
-        // event.print(cout);
+    while (lhef.readEvent() && ++nev) {
+        // get the particles entries from the event.
+        const auto ps = analysis::get_particles(lhef.hepeup);
+        // parse the initial states.
+        const auto taus = analysis::initial_states(ps);
+        if (!ditau_event(taus)) {
+            cout << appname << ": this isn't an ditau event! (" << nev << ")\n";
+            continue;
+        }
 
-        const auto ps = analysis::get_particles(event);
-        const auto from_tau1 = analysis::final_states_of(3, ps);
-        for (const auto &p : from_tau1) { cout << p.linenum() << '\n'; }
-        ++nev;
-    }
+        // the decay products of taus.
+        std::vector<Particles> from_tau;
+        for (const auto &tau : taus) {
+            from_tau.push_back(analysis::final_states_of(tau.linenum(), ps));
+        }
+        // to make sure that we have two decay chains.
+        if (from_tau.size() != 2) { continue; }
+
+    }  // event loop
     fin.close();
 
     cout << appname << ": the number of events processed: " << nev << '\n';
+}
+
+bool ditau_event(const Particles &ps) {
+    if (ps.size() != 2) { return false; }
+
+    if (ps[0].id() == 15 && ps[1].id() == -15) {
+        return true;
+    } else if (ps[0].id() == -15 && ps[1].id() == 15) {
+        return true;
+    }
+
+    return false;
 }
