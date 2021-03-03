@@ -9,7 +9,6 @@
 
 namespace analysis {
 class Particle;
-
 using Particles = std::vector<Particle>;
 
 class Particle {
@@ -63,8 +62,42 @@ Particles get_particles(const LHEF::HEPEUP &event);
 
 Particles final_states_of(int parent, const Particles &ps);
 
+Particles particles_of(std::set<long> pid, const Particles &ps);
+
+class FourMomentum {
+private:
+    std::array<double, 4> p_;
+
+public:
+    FourMomentum() = delete;
+    FourMomentum(double x, double y, double z, double t) : p_({{x, y, z, t}}) {}
+    FourMomentum(const Particle &p) : p_(p.four_momentum()) {}
+
+    double px() const { return p_[0]; }
+    double py() const { return p_[1]; }
+    double pz() const { return p_[2]; }
+    double e() const { return p_[3]; }
+
+    FourMomentum &operator+=(const FourMomentum &p) {
+        this->p_[0] += p.px();
+        this->p_[1] += p.py();
+        this->p_[2] += p.pz();
+        this->p_[3] += p.e();
+        return *this;
+    }
+
+    friend FourMomentum operator+(FourMomentum p1, const FourMomentum &p2) {
+        p1 += p2;
+        return p1;
+    }
+};
+
 /// returns the four-momentum (Px, Py, Pz, E) summed over the particles (`ps`).
-std::array<double, 4> sum(const Particles &ps);
+inline FourMomentum sum(const Particles &ps) {
+    FourMomentum psum{0.0, 0.0, 0.0, 0.0};
+    for (const auto &p : ps) { psum += FourMomentum{p}; }
+    return psum;
+}
 }  // namespace analysis
 
 #endif  // SRC_LHEF_HELPER_H_

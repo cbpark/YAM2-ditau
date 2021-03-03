@@ -1,6 +1,6 @@
 #include "lhef_helper.h"
 #include <algorithm>
-#include <array>
+#include <set>
 #include <vector>
 #include "HepMC3/LHEF.h"
 
@@ -46,14 +46,12 @@ Particles final_states_of(int parent, const Particles &ps) {
     return final_states;
 }
 
-std::array<double, 4> sum(const Particles& ps) {
-    std::array<double, 4> psum{0.0, 0.0, 0.0, 0.0};
-    for (const auto& p: ps) {
-        const auto momentum = p.four_momentum();
-        for (auto i = 0; i < 4; ++i) {
-            psum[i] = momentum[i];
-        }
+Particles particles_of(std::set<long> pid, const Particles &ps) {
+    Particles ps_;
+    for (const auto &p : ps) {
+        auto search = pid.find(p.id());
+        if (search != pid.end()) { ps_.push_back(p); }
     }
-    return psum;
+    return ps_;
 }
 }  // namespace analysis

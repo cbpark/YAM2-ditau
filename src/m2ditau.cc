@@ -1,12 +1,23 @@
+#include <array>
 #include <fstream>
 #include <iostream>
+#include <set>
+#include <utility>
 #include <vector>
-#include "HepMC3/LHEF.h"
+#include "HepMC3/LHEF.h"  // LHEF::Reader
 #include "lhef_helper.h"
 
+// defined in `lhef_helper.h`
 using analysis::Particles;
 using std::cout;
 
+/// the IDs of invisible particles.
+const std::set<long> INVISIBLES = {12, -12, 14, -14, 16, -16, 40, 3000};
+
+/// the IDs of visible particles.
+const std::set<long> VISIBLES = {11, -11, 13, -13, 211, -211};
+
+/// to check the event contains ditau.
 bool ditau_event(const Particles &ps);
 
 int main(int, char *argv[]) {
