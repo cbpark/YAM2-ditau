@@ -44,12 +44,12 @@ int main(int, char *argv[]) {
         auto event = lhef.hepeup;
         event.print(cout);
 
-        // get the particles entries from the event.
-        const auto ps = analysis::get_particles(event);
+        // get all the particles entries from the event.
+        const auto ps = analysis::get_particles_all(event);
         // parse the initial states.
         const auto taus = analysis::initial_states(ps);
         if (!ditau_event(taus)) {
-            cout << appname << ": this isn't an ditau event! (" << nev << ")\n";
+            cout << appname << ": this isn't ditau event! (" << nev << ")\n";
             continue;
         }
 

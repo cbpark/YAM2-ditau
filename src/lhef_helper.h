@@ -64,7 +64,7 @@ inline Particles initial_states(const Particles &ps) {
     return initial_states;
 }
 
-Particles get_particles(const LHEF::HEPEUP &event);
+Particles get_particles_all(const LHEF::HEPEUP &event);
 
 Particles final_states_of(int parent, const Particles &ps);
 
