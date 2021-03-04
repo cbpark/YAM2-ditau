@@ -2,8 +2,9 @@
  *  Copyright 2021 Chan Beom Park <cbpark@gmail.com>
  */
 
-#include <exception>      // std::exception
-#include <fstream>        // std:ifstream, std::ofstream
+#include <exception>  // std::exception
+#include <fstream>    // std:ifstream, std::ofstream
+#include <iomanip>
 #include <iostream>       // std::cout ,std::cerr
 #include <set>            // std::set
 #include <utility>        // std::pair
@@ -18,6 +19,7 @@ using analysis::Particles;
 using analysis::FourMomentum;
 using std::cerr;
 using std::cout;
+using std::setw;
 
 /// the IDs of invisible particles.
 const std::set<int> INVISIBLES = {12, -12, 14, -14, 16, -16, 40, 3000};
@@ -122,12 +124,17 @@ int main(int, char *argv[]) {
                      << ")\n";
                 continue;
             } else {
-                cout << "M2 = " << m2sol.value().m2() << '\n'
-                     << "where \n"
-                     << "  k1: " << m2sol.value().k1() << '\n'
-                     << "  k2: " << m2sol.value().k2() << '\n'
-                     << "found after " << m2sol.value().neval_objf()
-                     << " evaluations.\n";
+                // print the M2 value.
+                fout << setw(10) << m2sol.value().m2();
+
+                // the invisible momentum solution at the minimum.
+                const auto k1sol = m2sol.value().k1();
+                const auto k2sol = m2sol.value().k2();
+                // print the momentum solution.
+                fout << std::right << setw(10) << k1sol.px() << ' ' << setw(10)
+                     << k1sol.py() << ' ' << setw(10) << k1sol.pz();
+                fout << std::right << setw(10) << k2sol.px() << ' ' << setw(10)
+                     << k2sol.py() << ' ' << setw(10) << k2sol.pz() << '\n';
             }
         }
         // event loop ends
@@ -135,6 +142,9 @@ int main(int, char *argv[]) {
 
         // close the input LHE file.
         fin.close();
+
+        // close the output file.
+        fout.close();
 
         // finished.
         cout << appname << ": the number of events processed: " << nev << '\n';
