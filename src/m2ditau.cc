@@ -6,7 +6,7 @@
  *
  *  X --> Y1 + Y2 --> vis1(p1) inv1(k1) + vis2(p2) inv2(k2)
  *
- *  where X corresponds to sqrt(s) and Y is decaying particle (tau).
+ *  where X corresponds to sqrt(s) and Y's are the decaying particle (tau).
  *  vis and inv are visible and invisible particles, respectively.
  */
 
@@ -14,7 +14,7 @@
 #include <exception>      // std::exception
 #include <fstream>        // std:ifstream, std::ofstream
 #include <iomanip>        // std::setw
-#include <iostream>       // std::cout ,std::cerr
+#include <iostream>       // std::cout, std::cerr
 #include <set>            // std::set
 #include <utility>        // std::pair
 #include <vector>         // std::vector
@@ -36,10 +36,10 @@ const std::set<int> INVISIBLES = {12, -12, 14, -14, 16, -16, 40, 3000};
 /// the IDs of visible particles (electron, muon, charged pions).
 const std::set<int> VISIBLES = {11, -11, 13, -13, 211, -211};
 
-/// to check the event contains ditau (defined below main).
+/// to check the event contains ditau (implemented below main).
 bool ditauEvent(const Particles &ps);
 
-/// to get visible and invisible particle momenta (defined below main).
+/// to get visible and invisible particle momenta (implemented below main).
 std::pair<FourMomentum, FourMomentum> getVisInvis(const Particles &ps);
 
 int main(int argc, char *argv[]) {
