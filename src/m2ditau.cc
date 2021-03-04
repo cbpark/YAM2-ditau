@@ -76,6 +76,7 @@ int main(int argc, char *argv[]) {
         } else {
             m_inv = yam2::Mass{std::atof(argv[3])};
         }
+        cout << appname << ": the invisible mass is " << m_inv.value << '\n';
 
         // zero momentum for convenience to calculate M2.
         const auto zero = yam2::FourMomentum();
@@ -87,8 +88,8 @@ int main(int argc, char *argv[]) {
             const auto event = lhef.hepeup;
 
             // sqrt(s) of the particle collision: sqrt( (7 + 4)^2 - (7 - 4)^2 )
-            // const double sqrt_s = 10.583;
-            const double sqrt_s = event.SCALUP;
+            const double sqrt_s = 10.583;
+            // const double sqrt_s = event.SCALUP;
 #ifdef DEBUG
             event.print(cout);
             cout << "sqrt(s) = " << sqrt_s << '\n';
@@ -149,8 +150,9 @@ int main(int argc, char *argv[]) {
                 continue;
             }
 
-            // calculate M2. the second argument is tolerance.
-            const auto m2sol = yam2::m2Cons(input.value(), 1.0e-6);
+            // calculate M2. the latter arguments are tolerance and maximal
+            // evaluation number.
+            const auto m2sol = yam2::m2Cons(input.value(), 1.0e-6, 1000);
             if (!m2sol) {
                 cerr << appname << ": failed to find minimum! (" << nev
                      << ")\n";
@@ -163,10 +165,14 @@ int main(int argc, char *argv[]) {
                 const auto k1sol = m2sol.value().k1();
                 const auto k2sol = m2sol.value().k2();
                 // print the momentum solution.
-                fout << std::right << setw(10) << k1sol.px() << ' ' << setw(10)
-                     << k1sol.py() << ' ' << setw(10) << k1sol.pz();
-                fout << std::right << setw(10) << k2sol.px() << ' ' << setw(10)
-                     << k2sol.py() << ' ' << setw(10) << k2sol.pz() << '\n';
+                fout << std::right << setw(12) << k1sol.px() << ' ' << setw(12)
+                     << k1sol.py() << ' ' << setw(12) << k1sol.pz();
+                fout << std::right << setw(12) << k2sol.px() << ' ' << setw(12)
+                     << k2sol.py() << ' ' << setw(12) << k2sol.pz() << '\n';
+            }
+
+            if ((nev < 10000 && nev % 1000 == 0) || nev % 10000 == 0) {
+                cout << appname << ": ... processed " << nev << " events.\n";
             }
         }
         // event loop ends
