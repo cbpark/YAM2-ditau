@@ -39,7 +39,7 @@ const std::set<int> VISIBLES = {11, -11, 13, -13, 211, -211};
 /// to check the event contains ditau (defined below main).
 bool ditauEvent(const Particles &ps);
 
-/// to get visible and invisible particle momenta (define below main).
+/// to get visible and invisible particle momenta (defined below main).
 std::pair<FourMomentum, FourMomentum> getVisInvis(const Particles &ps);
 
 int main(int argc, char *argv[]) {
@@ -201,9 +201,9 @@ bool ditauEvent(const Particles &ps) {
         return true;
     } else if (ps[0].id() == -15 && ps[1].id() == 15) {
         return true;
+    } else {
+        return false;
     }
-
-    return false;
 }
 
 std::pair<FourMomentum, FourMomentum> getVisInvis(const Particles &ps) {
