@@ -18,7 +18,7 @@ LIBS     += $(shell HepMC3-config --libs)
 # YAM2 (https://github.com/cbpark/YAM2)
 YAM2     ?= /usr/local
 CXXFLAGS += -I$(YAM2)/include
-LIBS     += -L$(YAM2)/lib -lYAM2 -Wl,-rpath $(NLOPT)/lib
+LIBS     += -L$(YAM2)/lib -lYAM2 -Wl,-rpath $(YAM2)/lib
 
 # NLopt (https://nlopt.readthedocs.io/
 NLOPT    ?= /usr
