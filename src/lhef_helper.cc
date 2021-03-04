@@ -27,7 +27,7 @@ bool Particle::produced_from(int parent, const Particles &ps) const {
     }
 }
 
-Particles get_particles_all(const LHEF::HEPEUP &event) {
+Particles getParticlesAll(const LHEF::HEPEUP &event) {
     Particles ps;
     ps.reserve(event.NUP);
     for (auto iptl = 0; iptl < event.NUP; ++iptl) {
@@ -37,7 +37,7 @@ Particles get_particles_all(const LHEF::HEPEUP &event) {
     return ps;
 }
 
-Particles final_states_of(int parent, const Particles &ps) {
+Particles finalStatesOf(int parent, const Particles &ps) {
     Particles final_states;
     for (const auto &p : ps) {
         if (p.status() == 1) { final_states.push_back(p); }
@@ -51,7 +51,7 @@ Particles final_states_of(int parent, const Particles &ps) {
     return final_states;
 }
 
-Particles particles_of(std::set<int> pid, const Particles &ps) {
+Particles particlesOf(std::set<int> pid, const Particles &ps) {
     Particles ps_;
     for (const auto &p : ps) {
         auto search = pid.find(p.id());

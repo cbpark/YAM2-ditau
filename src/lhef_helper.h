@@ -53,10 +53,10 @@ public:
 
     bool produced_from(int parent, const Particles &ps) const;
 
-    friend Particles initial_states(const Particles &event);
+    friend Particles initialStates(const Particles &event);
 };
 
-inline Particles initial_states(const Particles &ps) {
+inline Particles initialStates(const Particles &ps) {
     Particles initial_states;
     for (const auto &p : ps) {
         if (p.parents_.first == 1) { initial_states.push_back(p); }
@@ -64,11 +64,11 @@ inline Particles initial_states(const Particles &ps) {
     return initial_states;
 }
 
-Particles get_particles_all(const LHEF::HEPEUP &event);
+Particles getParticlesAll(const LHEF::HEPEUP &event);
 
-Particles final_states_of(int parent, const Particles &ps);
+Particles finalStatesOf(int parent, const Particles &ps);
 
-Particles particles_of(std::set<int> pid, const Particles &ps);
+Particles particlesOf(std::set<int> pid, const Particles &ps);
 
 class FourMomentum {
 private:

@@ -71,9 +71,9 @@ int main(int, char *argv[]) {
 #endif
 
             // get all the particles entries from the event.
-            const auto ps = analysis::get_particles_all(event);
+            const auto ps = analysis::getParticlesAll(event);
             // parse the initial states.
-            const auto taus = analysis::initial_states(ps);
+            const auto taus = analysis::initialStates(ps);
             if (!ditauEvent(taus)) {
                 cerr << appname << ": this isn't ditau event! (" << nev
                      << ")\n";
@@ -91,8 +91,7 @@ int main(int, char *argv[]) {
             // the decay products of taus.
             std::vector<Particles> from_tau;
             for (const auto &tau : taus) {
-                from_tau.push_back(
-                    analysis::final_states_of(tau.linenum(), ps));
+                from_tau.push_back(analysis::finalStatesOf(tau.linenum(), ps));
             }
             // to make sure that we have two decay chains.
             if (from_tau.size() != 2) { continue; }
@@ -169,9 +168,9 @@ bool ditauEvent(const Particles &ps) {
 }
 
 std::pair<FourMomentum, FourMomentum> getVisInvis(const Particles &ps) {
-    const auto visibles = particles_of(VISIBLES, ps);
+    const auto visibles = particlesOf(VISIBLES, ps);
     const auto p_vis = analysis::sum(visibles);
-    const auto invisibles = particles_of(INVISIBLES, ps);
+    const auto invisibles = particlesOf(INVISIBLES, ps);
     const auto p_invis = analysis::sum(invisibles);
     return {p_vis, p_invis};
 }
