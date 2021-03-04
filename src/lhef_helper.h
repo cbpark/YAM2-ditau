@@ -1,17 +1,20 @@
 /*
  *  Copyright 2021 Chan Beom Park <cbpark@gmail.com>
+ *
+ *  Types and functions for analyzing events in LHEF.
  */
 
 #ifndef SRC_LHEF_HELPER_H_
 #define SRC_LHEF_HELPER_H_
 
-#include <array>
-#include <optional>
-#include <ostream>
-#include <set>
-#include <utility>
-#include <vector>
-#include "HepMC3/LHEF.h"
+#include <array>          // std::array
+#include <cmath>          // std::sqrt
+#include <optional>       // std::optional
+#include <ostream>        // std::ostream
+#include <set>            // std::set
+#include <utility>        // std::pair
+#include <vector>         // std::vector
+#include "HepMC3/LHEF.h"  // LHEF::HEPEUP
 
 namespace analysis {
 class Particle;
@@ -77,12 +80,21 @@ private:
 public:
     FourMomentum() = delete;
     FourMomentum(double x, double y, double z, double t) : p_({{x, y, z, t}}) {}
-    FourMomentum(const Particle &p) : p_(p.four_momentum()) {}
+    explicit FourMomentum(const Particle &p) : p_(p.four_momentum()) {}
 
     double px() const { return p_[0]; }
     double py() const { return p_[1]; }
     double pz() const { return p_[2]; }
     double e() const { return p_[3]; }
+    std::optional<double> mass() const {
+        double m_sq =
+            p_[3] * p_[3] - p_[0] * p_[0] - p_[1] * p_[1] - p_[2] * p_[2];
+        if (m_sq < 0.0) {
+            return {};
+        } else {
+            return std::sqrt(m_sq);
+        }
+    }
 
     FourMomentum &operator+=(const FourMomentum &p) {
         this->p_[0] += p.px();

@@ -1,10 +1,19 @@
 /*
  *  Copyright 2021 Chan Beom Park <cbpark@gmail.com>
+ *
+ *  This calculate the M2 for the e+ e- --> tau+ tau- process. using
+ *  YAM2 (https://github.com/cbpark/YAM2). The decay topology is
+ *
+ *  X --> Y1 + Y2 --> vis1(p1) inv1(k1) + vis2(p2) inv2(k2)
+ *
+ *  where X corresponds to sqrt(s) and Y is decaying particle (tau).
+ *  vis and inv are visible and invisible particles, respectively.
  */
 
-#include <exception>  // std::exception
-#include <fstream>    // std:ifstream, std::ofstream
-#include <iomanip>
+#include <cstdlib>        // std::atof
+#include <exception>      // std::exception
+#include <fstream>        // std:ifstream, std::ofstream
+#include <iomanip>        // std::setw
 #include <iostream>       // std::cout ,std::cerr
 #include <set>            // std::set
 #include <utility>        // std::pair
@@ -21,10 +30,10 @@ using std::cerr;
 using std::cout;
 using std::setw;
 
-/// the IDs of invisible particles.
+/// the IDs of invisible particles (neutrinos, ...)
 const std::set<int> INVISIBLES = {12, -12, 14, -14, 16, -16, 40, 3000};
 
-/// the IDs of visible particles.
+/// the IDs of visible particles (electron, muon, charged pions).
 const std::set<int> VISIBLES = {11, -11, 13, -13, 211, -211};
 
 /// to check the event contains ditau (defined below main).
@@ -33,8 +42,17 @@ bool ditauEvent(const Particles &ps);
 /// to get visible and invisible particle momenta (define below main).
 std::pair<FourMomentum, FourMomentum> getVisInvis(const Particles &ps);
 
-int main(int, char *argv[]) {
+int main(int argc, char *argv[]) {
     const auto appname{"m2ditau"};
+    if (!(argc == 3 || argc == 4)) {
+        cout << "usage: ./bin" << appname
+             << " <event.lhe> <output.dat> [mInvisible]\n"
+             << "  <event.lhe>: input file in LHEF (required).\n"
+             << "  <output.dat>: output file to store the result (required).\n"
+             << "  [mInvisible]: the input mass ifor invisible particles "
+                "(optional, default = 0)\n";
+        return 1;
+    }
 
     cout << appname << ": input LHE file: " << argv[1] << '\n';
     std::ifstream fin{argv[1]};
@@ -49,9 +67,15 @@ int main(int, char *argv[]) {
 
         cout << appname << ": the output will be stored in " << argv[2] << '\n';
         std::ofstream fout{argv[2]};
+        fout << "# M2, k1x, k1y, k1z, k2x, k2y, k2z\n";
 
         // invisible particle mass.
-        const yam2::Mass m_inv{0.0};
+        yam2::Mass m_inv;
+        if (argc == 3) {
+            m_inv = yam2::Mass{0.0};
+        } else {
+            m_inv = yam2::Mass{std::atof(argv[3])};
+        }
 
         // zero momentum for convenience to calculate M2.
         const auto zero = yam2::FourMomentum();
@@ -59,7 +83,7 @@ int main(int, char *argv[]) {
         // --------------------------------------------------------------------------
         // event loop begins
         int nev = 0;
-        for (; lhef.readEvent(); ++nev) {
+        while (lhef.readEvent() && ++nev) {
             const auto event = lhef.hepeup;
 
             // sqrt(s) of the particle collision: sqrt( (7 + 4)^2 - (7 - 4)^2 )
@@ -76,6 +100,15 @@ int main(int, char *argv[]) {
             const auto taus = analysis::initialStates(ps);
             if (!ditauEvent(taus)) {
                 cerr << appname << ": this isn't ditau event! (" << nev
+                     << ")\n";
+                continue;
+            }
+
+#ifdef DEBUG
+            cout << "m_inv = " << m_inv.value << '\n';
+#endif
+            if (m_inv.value > taus[0].mass() || m_inv.value > taus[1].mass()) {
+                cerr << appname << ": the input mass is unphysical! (" << nev
                      << ")\n";
                 continue;
             }
@@ -126,7 +159,7 @@ int main(int, char *argv[]) {
                 // print the M2 value.
                 fout << setw(10) << m2sol.value().m2();
 
-                // the invisible momentum solution at the minimum.
+                // the invisible momentum solution of M2.
                 const auto k1sol = m2sol.value().k1();
                 const auto k2sol = m2sol.value().k2();
                 // print the momentum solution.
