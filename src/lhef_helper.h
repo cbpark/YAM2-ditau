@@ -22,6 +22,7 @@ using Particles = std::vector<Particle>;
 
 class Particle {
 private:
+    /// the line number in the LHEF event block (starting from 1, not 0).
     int linenum_;
     int id_;
     int status_;
@@ -54,11 +55,13 @@ public:
         return {};
     }
 
+    /// is the particle produced from `parent`?
     bool produced_from(int parent, const Particles &ps) const;
 
     friend Particles initialStates(const Particles &event);
 };
 
+/// initial state particles.
 inline Particles initialStates(const Particles &ps) {
     Particles initial_states;
     for (const auto &p : ps) {
@@ -67,10 +70,13 @@ inline Particles initialStates(const Particles &ps) {
     return initial_states;
 }
 
+/// collect all the particle entries in LHEF event block.
 Particles getParticlesAll(const LHEF::HEPEUP &event);
 
+/// the final state particles in the decay process of the particle in `parent`.
 Particles finalStatesOf(int parent, const Particles &ps);
 
+/// collect particles having ID in `pid`.
 Particles particlesOf(std::set<int> pid, const Particles &ps);
 
 class FourMomentum {
