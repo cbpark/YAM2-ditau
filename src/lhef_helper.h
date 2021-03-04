@@ -71,7 +71,7 @@ inline Particles initialStates(const Particles &ps) {
 }
 
 /// collect all the particle entries in LHEF event block.
-Particles getParticlesAll(const LHEF::HEPEUP &event);
+Particles getAllParticles(const LHEF::HEPEUP &event);
 
 /// the final state particles in the decay process of the particle in `parent`.
 Particles finalStatesOf(int parent, const Particles &ps);

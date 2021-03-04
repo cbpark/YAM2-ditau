@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 #endif
 
             // get all the particles entries from the event.
-            const auto ps = analysis::getParticlesAll(event);
+            const auto ps = analysis::getAllParticles(event);
             // parse the initial states.
             const auto taus = analysis::initialStates(ps);
             if (!ditauEvent(taus)) {

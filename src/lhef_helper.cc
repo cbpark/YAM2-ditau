@@ -27,7 +27,7 @@ bool Particle::produced_from(int parent, const Particles &ps) const {
     }
 }
 
-Particles getParticlesAll(const LHEF::HEPEUP &event) {
+Particles getAllParticles(const LHEF::HEPEUP &event) {
     Particles ps;
     ps.reserve(event.NUP);
     for (auto iptl = 0; iptl < event.NUP; ++iptl) {
