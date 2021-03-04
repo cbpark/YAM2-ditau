@@ -45,7 +45,7 @@ std::pair<FourMomentum, FourMomentum> getVisInvis(const Particles &ps);
 int main(int argc, char *argv[]) {
     const auto appname{"m2ditau"};
     if (!(argc == 3 || argc == 4)) {
-        cout << "usage: ./bin" << appname
+        cout << "usage: ./bin/" << appname
              << " <event.lhe> <output.dat> [mInvisible]\n"
              << "  <event.lhe>: input file in LHEF (required).\n"
              << "  <output.dat>: output file to store the result (required).\n"
