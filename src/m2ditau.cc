@@ -88,8 +88,8 @@ int main(int argc, char *argv[]) {
             const auto event = lhef.hepeup;
 
             // sqrt(s) of the particle collision: sqrt( (7 + 4)^2 - (7 - 4)^2 )
-            const double sqrt_s = 10.583;
-            // const double sqrt_s = event.SCALUP;
+            // const double sqrt_s = 10.583;
+            const double sqrt_s = event.SCALUP;
 #ifdef DEBUG
             event.print(cout);
             cout << "sqrt(s) = " << sqrt_s << '\n';
