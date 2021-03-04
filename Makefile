@@ -1,4 +1,3 @@
-PKGNAME  := YAM2-ditau
 SRCDIR   := src
 BINDIR   := bin
 CXXFLAGS := -g -O2 -Wall -Wextra -std=c++17 -pedantic -I$(SRCDIR) $(CXXFLAGS)
