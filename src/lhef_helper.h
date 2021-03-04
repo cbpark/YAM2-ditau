@@ -8,7 +8,6 @@
 #define SRC_LHEF_HELPER_H_
 
 #include <array>          // std::array
-#include <cmath>          // std::sqrt
 #include <optional>       // std::optional
 #include <ostream>        // std::ostream
 #include <set>            // std::set
@@ -92,15 +91,6 @@ public:
     double py() const { return p_[1]; }
     double pz() const { return p_[2]; }
     double e() const { return p_[3]; }
-    std::optional<double> mass() const {
-        double m_sq =
-            p_[3] * p_[3] - p_[0] * p_[0] - p_[1] * p_[1] - p_[2] * p_[2];
-        if (m_sq < 0.0) {
-            return {};
-        } else {
-            return std::sqrt(m_sq);
-        }
-    }
 
     FourMomentum &operator+=(const FourMomentum &p) {
         this->p_[0] += p.px();
