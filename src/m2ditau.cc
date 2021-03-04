@@ -1,8 +1,8 @@
 /*
  *  Copyright 2021 Chan Beom Park <cbpark@gmail.com>
  *
- *  This calculate the M2 for the e+ e- --> tau+ tau- process. using
- *  YAM2 (https://github.com/cbpark/YAM2). The decay topology is
+ *  This calculate the M2 variable for the e+ e- --> tau+ tau- process
+ *  using YAM2 (https://github.com/cbpark/YAM2). The decay topology is
  *
  *  X --> Y1 + Y2 --> vis1(p1) inv1(k1) + vis2(p2) inv2(k2)
  *
