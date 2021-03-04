@@ -6,7 +6,7 @@ An example analysis calculating the M<sub>2</sub> collider observable by using t
 
 ## Dependencies
 
-* [HepMC3](https://gitlab.cern.ch/hepmc/HepMC3) for [`HepMC3/LHEF.h`](http://home.thep.lu.se/~leif/LHEF/): See [`README.md`](https://gitlab.cern.ch/hepmc/HepMC3/-/blob/master/README.md). After installation, make sure that `HepMC3-config` is in the `PATH`.
+* [HepMC3](https://gitlab.cern.ch/hepmc/HepMC3) for [`HepMC3/LHEF.h`](http://home.thep.lu.se/~leif/LHEF/): See [`README.md`](https://gitlab.cern.ch/hepmc/HepMC3/-/blob/master/README.md). For Ubuntu, install [`libhepmc3-dev`](https://launchpad.net/ubuntu/+source/hepmc3). After HepMC3 has been installed, make sure that `HepMC3-config` is in the `PATH`.
 
 ``` no-hightlight
 $ HepMC3-config --version
