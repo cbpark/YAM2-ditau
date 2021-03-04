@@ -61,7 +61,7 @@ $ ./bin/m2ditau
 usage: ./bin/m2ditau <event.lhe> <output.dat> [mInvisible]
   <event.lhe>: input file in LHEF (required).
   <output.dat>: output file to store the result (required).
-  [mInvisible]: the input mass ifor invisible particles (optional, default = 0)
+  [mInvisible]: the input mass for invisible particles (optional, default = 0)
 
 $ ./bin/m2ditau event.lhe output.dat 0.0
 m2ditau: input LHE file: event.lhe
