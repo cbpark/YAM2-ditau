@@ -105,9 +105,6 @@ int main(int argc, char *argv[]) {
                 continue;
             }
 
-#ifdef DEBUG
-            cout << "m_inv = " << m_inv.value << '\n';
-#endif
             if (m_inv.value > taus[0].mass() || m_inv.value > taus[1].mass()) {
                 cerr << appname << ": the input mass is unphysical! (" << nev
                      << ")\n";
@@ -140,6 +137,10 @@ int main(int argc, char *argv[]) {
             // missing transverse momentum.
             const yam2::TransverseMomentum ptmiss{inv1.px() + inv2.px(),
                                                   inv1.py() + inv2.py()};
+#ifdef DEBUG
+            cout << "MET: { " << ptmiss << " }\n";
+#endif
+
             // input kinematic configuration for M2.
             const auto input = yam2::mkInput(
                 {{vis1.e(), vis1.px(), vis1.py(), vis1.pz()},
