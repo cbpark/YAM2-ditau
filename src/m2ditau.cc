@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
 
             // calculate M2. the latter arguments are tolerance and maximal
             // evaluation number.
-            const auto m2sol = yam2::m2Cons(input.value(), 1.0e-6, 1000);
+            const auto m2sol = yam2::m2Cons(input, 1.0e-6, 1000);
             if (!m2sol) {
                 cerr << appname << ": failed to find minimum! (" << nev
                      << ")\n";
