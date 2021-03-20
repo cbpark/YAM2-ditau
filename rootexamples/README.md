@@ -1,7 +1,9 @@
 In YAM2, run
 
 ```
-make lib
+$ make lib
+$ ls lib
+libYAM2.so
 ```
 
 to create the shared library, `libYAM2.so`. In macOS, it is `libYAM2.dylib`.
