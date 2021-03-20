@@ -13,20 +13,26 @@ void calcm2() {
     // gSystem->Load("/usr/local/lib/libYAM2.so");
     // gSystem->Load("/usr/lib/libnlopt.so");
 
-    TLorentzVector a1{-3.3470, -0.2686, 1.8677, 3.8437};
-    // (px, py, pz, e)
-    TLorentzVector a2{1.0035, -0.2445, 0.340724, 1.0927};
-    // (ptmiss_x ,ptmiss_y)
+    /*
+     *  sqrt(s) --> v1(p1) chi1(k1) + v2(p2) chi2(k2).
+     */
+    // (p1x, p1y, p1z, e1)
+    TLorentzVector v1{-3.3470, -0.2686, 1.8677, 3.8437};
+    // (p2x, p2y, p2z, e2)
+    TLorentzVector v2{1.0035, -0.2445, 0.340724, 1.0927};
+    // (ptmiss_x, ptmiss_y): (k1x + k2x, k1y + k2y)
     TVector2 ptmiss{2.3435, 0.5131};
+    // invisible particle mass
     double m_invis = 0.0;
-    // longitudinal momentum of collision system
+    // longitudinal momentum of the total system: 7 - 4 = 3
     double ptot_z = 3.0;
+    // sqrt(s) of the total system: sqrt( (7 + 4)^2 - (7 - 4)^2 )
     double sqrt_s = 10.583;
 
     auto zero = yam2::FourMomentum();
 
-    auto input = yam2::mkInput({{a1.E(), a1.Px(), a1.Py(), a1.Pz()},
-                                {a2.E(), a2.Px(), a2.Py(), a2.Pz()}},
+    auto input = yam2::mkInput({{v1.E(), v1.Px(), v1.Py(), v1.Pz()},
+                                {v2.E(), v2.Px(), v2.Py(), v2.Pz()}},
                                {zero, zero}, {ptmiss.Px(), ptmiss.Py()},
                                yam2::Mass{m_invis}, {}, sqrt_s, ptot_z);
 
