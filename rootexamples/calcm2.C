@@ -9,6 +9,10 @@ void calcm2() {
     // For the include path of YAM2, where YAM2/yam2.h exists.
     gSystem->AddIncludePath("/usr/local/include");
 
+    // note that in the interactive ROOT environment, you should also run
+    // gSystem->Load("/usr/local/lib/libYAM2.so");
+    // gSystem->Load("/usr/lib/libnlopt.so");
+
     TLorentzVector a1{-3.3470, -0.2686, 1.8677, 3.8437};
     // (px, py, pz, e)
     TLorentzVector a2{1.0035, -0.2445, 0.340724, 1.0927};
