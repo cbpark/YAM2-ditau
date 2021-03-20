@@ -23,25 +23,23 @@ void calcm2() {
     // (ptmiss_x, ptmiss_y): (k1x + k2x, k1y + k2y)
     TVector2 ptmiss{2.3435, 0.5131};
     // invisible particle mass
-    double m_invis = 0.0;
+    double m_inv = 0.0;
     // longitudinal momentum of the total system: 7 - 4 = 3
     double ptot_z = 3.0;
     // sqrt(s) of the total system: sqrt( (7 + 4)^2 - (7 - 4)^2 )
     double sqrt_s = 10.583;
 
-    auto zero = yam2::FourMomentum();
-
+    yam2::FourMomentum zero;
     auto input = yam2::mkInput({{v1.E(), v1.Px(), v1.Py(), v1.Pz()},
                                 {v2.E(), v2.Px(), v2.Py(), v2.Pz()}},
                                {zero, zero}, {ptmiss.Px(), ptmiss.Py()},
-                               yam2::Mass{m_invis}, {}, sqrt_s, ptot_z);
-
+                               yam2::Mass{m_inv}, {}, sqrt_s, ptot_z);
     if (!input) {
         std::cerr << "Invalid input!\n";
         return 1;
     }
 
-    const auto m2sol = yam2::m2Cons(input, 1.0e-6, 1000);
+    auto m2sol = yam2::m2Cons(input, 1.0e-6, 1000);
     if (!m2sol) {
         std::cerr << "Failed to find minimum!\n";
         return 1;
