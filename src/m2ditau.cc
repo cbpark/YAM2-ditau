@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
             }
 
             // the longitudinal momentum of total system: 7 - 4 GeV.
-            // const oduble pz_ditau = 3.0;
+            // const double pz_ditau = 3.0;
             const double pz_ditau =
                 taus[0].four_momentum()[2] + taus[1].four_momentum()[2];
 #ifdef DEBUG
