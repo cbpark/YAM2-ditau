@@ -23,6 +23,10 @@ LIBS     += -L$(YAM2)/lib -lYAM2 -Wl,-rpath $(YAM2)/lib
 NLOPT    ?= /usr
 LIBS     += -L$(NLOPT)/lib -lnlopt -Wl,-rpath $(NLOPT)/lib
 
+# ROOT (https://root.cern.ch)
+CXXFLAGS += -I$(shell root-config --incdir)
+LIBS     += $(shell root-config --libs)
+
 .PHONY: all build clean
 
 all: $(EXE)

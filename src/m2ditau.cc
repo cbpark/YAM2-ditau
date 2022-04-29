@@ -78,9 +78,6 @@ int main(int argc, char *argv[]) {
         }
         cout << appname << ": the invisible mass is " << m_inv.value << '\n';
 
-        // zero momentum for convenience to calculate M2.
-        const auto zero = yam2::FourMomentum();
-
         // --------------------------------------------------------------------------
         // event loop begins
         int nev = 0;
@@ -142,10 +139,10 @@ int main(int argc, char *argv[]) {
 #endif
 
             // input kinematic configuration for M2.
-            const auto input = yam2::mkInput(
-                {{vis1.e(), vis1.px(), vis1.py(), vis1.pz()},
-                 {vis2.e(), vis2.px(), vis2.py(), vis2.pz()}},
-                {zero, zero}, ptmiss, m_inv, {}, sqrt_s, {pz_ditau});
+            const auto input =
+                yam2::mkInput({vis1.e(), vis1.px(), vis1.py(), vis1.pz()},
+                              {vis2.e(), vis2.px(), vis2.py(), vis2.pz()},
+                              ptmiss, m_inv, {}, sqrt_s, {pz_ditau});
             if (!input) {
                 cerr << appname << ": invalid input! (" << nev << ")\n";
                 continue;
